@@ -3,9 +3,7 @@ import Image from 'next/image';
 
 const TaskItem = () => {
   // Component that shows each TaskItem
-  return (
-    <></>
-  );
+  return <></>;
 };
 
 export default TaskItem;

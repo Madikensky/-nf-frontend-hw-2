@@ -11,7 +11,7 @@ export default function Home() {
   const [allTasks, setAllTasks] = useState([task]); // rewrite using states
   const [newTask, setNewTask] = useState({});
 
-  const filter = 'all'; // rewrite using states
+  const [filter, setFilter] = useState('all'); // rewrite using states
 
   const handleChange = ({ target }) => {
     setNewTask((prev) => ({
@@ -45,6 +45,32 @@ export default function Home() {
     );
   };
 
+  const showAll = () => {
+    setFilter('all');
+  };
+
+  const showActive = () => {
+    setFilter('active');
+  };
+
+  const showCompleted = () => {
+    setFilter('completed');
+  };
+
+  const filteredArr = allTasks.filter((task) => {
+    if (filter === 'completed') {
+      return task.completed;
+    }
+    if (filter === 'active') {
+      return !task.completed;
+    }
+    return true;
+  });
+
+  const clearCompleted = () => {
+    setAllTasks((prevTasks) => prevTasks.filter((task) => !task.completed));
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
@@ -68,7 +94,7 @@ export default function Home() {
         {/* Medium level: extract todo's listing to TaskList component */}
         {/* Basic level: map through tasks state by using this code: */}
         <ul>
-          {allTasks.map((task, id) => (
+          {filteredArr.map((task, id) => (
             <li
               key={id}
               className="flex justify-between items-center p-2 bg-gray-900 rounded mb-2"
@@ -120,30 +146,30 @@ export default function Home() {
           ))}
         </ul>
         <div className="mt-4 flex justify-between items-center text-sm text-gray-400">
-          <span> n items left</span>{' '}
+          <span> {filteredArr.length} items left</span>{' '}
           {/* show how many uncompleted items left */}
           <div>
             <button
-              onClick={() => alert('Show all')}
+              onClick={showAll}
               className={`mr-2 ${filter === 'all' ? 'text-white' : ''}`}
             >
               All
             </button>
             <button
-              onClick={() => alert('Show active')}
+              onClick={showActive}
               className={`mr-2 ${filter === 'active' ? 'text-white' : ''}`}
             >
               Active
             </button>
             <button
-              onClick={() => alert('Show completed')}
+              onClick={showCompleted}
               className={`${filter === 'completed' ? 'text-white' : ''}`}
             >
               Completed
             </button>
           </div>
           <button
-            onClick={() => alert('Clear completed tasks')}
+            onClick={clearCompleted}
             className="text-gray-400 hover:text-white"
           >
             Clear Completed

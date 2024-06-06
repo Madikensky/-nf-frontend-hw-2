@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TaskItem from './components/TaskItem';
 import TaskList from './components/TaskList';
 
@@ -8,9 +8,24 @@ const task = { id: 1, text: 'Todo Test', completed: false };
 let idx = task.id + 1;
 
 export default function Home() {
-  const [allTasks, setAllTasks] = useState([task]); // rewrite using states
+  // const [allTasks, setAllTasks] = useState([task]); // rewrite using states
+  const [allTasks, setAllTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    return savedTasks ? JSON.parse(savedTasks) : [task];
+  });
   const [newTask, setNewTask] = useState({});
   const [filter, setFilter] = useState('all'); // rewrite using states
+
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    if (savedTasks) {
+      setAllTasks([...JSON.parse(savedTasks)]);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(allTasks));
+  }, [allTasks]);
 
   const handleChange = ({ target }) => {
     setNewTask((prev) => ({

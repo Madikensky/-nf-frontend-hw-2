@@ -5,6 +5,7 @@ import TaskItem from './components/TaskItem';
 import TaskList from './components/TaskList';
 
 const task = { id: 1, text: 'Todo Test', completed: false };
+let idx = task.id + 1;
 
 export default function Home() {
   const [allTasks, setAllTasks] = useState([task]); // rewrite using states
@@ -15,7 +16,7 @@ export default function Home() {
   const handleChange = ({ target }) => {
     setNewTask((prev) => ({
       ...prev,
-      id: 2,
+      id: idx,
       text: target.value,
       completed: false,
     }));
@@ -23,12 +24,17 @@ export default function Home() {
 
   const handleAddTask = () => {
     // Implement add task logic here
+    idx++;
     setAllTasks((prevTasks) => [newTask, ...prevTasks]);
-    // setNewTask({});
+    setNewTask({});
   };
 
-  const handleToggleTask = (status, id) => {
-    // Implement toggle completed/uncompleted task logic here
+  const handleToggleTask = (e) => {
+    setAllTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task === e ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
   const handleDeleteTask = (index) => {
@@ -66,7 +72,7 @@ export default function Home() {
               <div className="flex items-center">
                 <button
                   className="w-6 h-6 my-auto mr-6"
-                  onClick={() => handleToggleTask()}
+                  onClick={() => handleToggleTask(task)}
                 >
                   <Image
                     src={

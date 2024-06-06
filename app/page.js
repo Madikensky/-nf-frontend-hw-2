@@ -32,13 +32,17 @@ export default function Home() {
   const handleToggleTask = (e) => {
     setAllTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task === e ? { ...task, completed: !task.completed } : task
+        task.id === e.id ? { ...task, completed: !task.completed } : task
       )
     );
+    console.log(e);
   };
 
-  const handleDeleteTask = (index) => {
+  const handleDeleteTask = (handleTask) => {
     // Implement delete task logic here
+    setAllTasks((prevTasks) =>
+      prevTasks.filter((task) => task.id !== handleTask.id)
+    );
   };
 
   return (
@@ -94,7 +98,7 @@ export default function Home() {
                 </span>
               </div>
               <button
-                onClick={() => handleDeleteTask(task.id)}
+                onClick={() => handleDeleteTask(task)}
                 className="text-gray-400 hover:text-white"
               >
                 <svg

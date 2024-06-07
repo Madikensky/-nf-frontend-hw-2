@@ -17,9 +17,11 @@ export default function Home() {
   const [filter, setFilter] = useState('all'); // rewrite using states
 
   useEffect(() => {
-    const savedTasks = localStorage.getItem('tasks');
-    if (savedTasks) {
-      setAllTasks([...JSON.parse(savedTasks)]);
+    if (typeof window !== undefined) {
+      const savedTasks = localStorage.getItem('tasks');
+      if (savedTasks) {
+        setAllTasks([...JSON.parse(savedTasks)]);
+      }
     }
   }, []);
 

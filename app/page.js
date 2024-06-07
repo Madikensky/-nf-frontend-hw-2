@@ -9,12 +9,7 @@ let idx = task.id + 1;
 
 export default function Home() {
   // const [allTasks, setAllTasks] = useState([task]); // rewrite using states
-  const [allTasks, setAllTasks] = useState(() => {
-    if (typeof window !== undefined) {
-      const savedTasks = localStorage.getItem('tasks');
-      return savedTasks ? JSON.parse(savedTasks) : [task];
-    }
-  });
+  const [allTasks, setAllTasks] = useState([]);
   const [newTask, setNewTask] = useState({});
   const [filter, setFilter] = useState('all'); // rewrite using states
 
@@ -28,7 +23,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(allTasks));
+    if (allTasks.length > 0) {
+      localStorage.setItem('tasks', JSON.stringify(allTasks));
+    }
   }, [allTasks]);
 
   const handleChange = ({ target }) => {
